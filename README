@@ -1,0 +1,91 @@
+======================================
+Mongo_DB
+
+MongoDB class for CodeIgniter
+
+by Ben Edmunds
+======================================
+
+Yo,
+
+This is a class for using MongoDB with CI.  This is an extreme work in 
+progress.  There are a ton of features I would like to add/change so 
+feel free to fork and add features.
+
+INSTALLATION:
+Just copy the files from this package to the correspoding folder in your
+application folder.  Then insert the appropriate settings in the config 
+file.  You will also need MongoDB setup and working with the PECL Mongo 
+class.
+
+USING MONGO_DB:
+Below is sample controller code.  There is also a example model 
+named Blog_model that will walk you through extending mongo_db 
+with your own models.
+
+
+USING EXAMPLE MODEL:
+
+	//this would likely be auto-loaded but you can load it when needed as well
+	$this->load->model('mongo_db');
+	
+	//load the example blog model
+	$this->load->model('blog_model');
+		
+	//create our post (document)
+	$post = array('id' => ($this->blog_model->count()+1),
+				  'title' => 'test1',
+				  'body' => 'blah',
+				  'author' => 'ben',
+				  'date' => time(),
+				 );
+	$this->blog_model->add_post($post);
+
+
+	echo 'There are ' . $this->blog_model->count() . ' total posts:<br />';
+	foreach ($this->blog_model->find() as $post) {
+		print_r($post);
+	}
+		
+	echo '<br /><br />This is the most recent post:<br />';	
+	print_r($this->blog_model->find_one(array('id' => $this->blog_model->count())));
+
+
+USING MONGO_DB DIRECTLY IN YOUR CONTROLLER:
+
+	//this would likely be auto-loaded but you can load it when needed as well
+	$this->load->model('mongo_db');
+		
+	//set which collection to use	
+	$this->mongo_db->collection('posts');
+		
+	//add a post (document)	
+	$post = array('id' => ($this->mongo_db->posts->count()+1),
+				  'title' => 'test1',
+				  'body' => 'blah',
+				  'author' => 'ben',
+				  'date' => time(),
+				 );
+	$this->mongo_db->posts->insert($post);
+
+
+	echo 'There are ' . $this->mongo_db->posts->count() . ' total posts:<br />';
+	foreach ($this->mongo_db->posts->find() as $post) {
+		print_r($post);
+	}
+		
+	echo '<br /><br />This is the most recent post:<br />';	
+	print_r($this->mongo_db->find_one(array('id' => $this->mongo_db->posts->count())));
+
+
+
+
+
+Feel free to send me an email or create an issue if you have any problems
+but keep in mind this is extremely new...
+
+
+Thanks,
+-Ben Edmunds
+ ben.edmunds@gmail.com
+ @benedmunds
