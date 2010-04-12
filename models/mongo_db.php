@@ -117,8 +117,6 @@ class Mongo_db extends CI_Model
 		//set the database
 		$this->db = $this->handle->$database;	
 		
-		//$this->db =& $this;
-		
 		return $this->db;
 	}
 	
